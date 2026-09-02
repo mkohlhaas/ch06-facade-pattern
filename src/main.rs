@@ -85,3 +85,20 @@ fn main() {
         Err(e) => println!("Error: {}", e),
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_deposit_funds_success() {
+        let wallet = WalletFacade::default();
+        assert!(wallet.deposit_funds("user_123", 250.0).is_ok());
+    }
+
+    #[test]
+    fn test_deposit_funds_small_amount() {
+        let wallet = WalletFacade::default();
+        assert!(wallet.deposit_funds("user_456", 10.5).is_ok());
+    }
+}
