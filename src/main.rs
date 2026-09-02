@@ -4,7 +4,10 @@
 // database, notifying a user, and appending to a secure ledger. Instead of making the client handle
 // all these steps, a WalletFacade manages the interaction.
 
-// --- Complex Subsystem Components ---
+// ==================================== //
+// --- Complex Subsystem Components --- //
+// ==================================== //
+
 struct AccountVerification;
 impl AccountVerification {
     fn verify(&self, account_id: &str) -> bool {
@@ -33,7 +36,10 @@ impl Ledger {
     }
 }
 
-// --- The Facade ---
+// ================== //
+// --- The Facade --- //
+// ================== //
+
 pub struct WalletFacade {
     verifier: AccountVerification,
     db: Database,
@@ -66,7 +72,10 @@ impl Default for WalletFacade {
     }
 }
 
-// --- Client Code ---
+// =================== //
+// --- Client Code --- //
+// =================== //
+
 fn main() {
     // The client only interacts with the unified Facade API
     let wallet_system = WalletFacade::default();
