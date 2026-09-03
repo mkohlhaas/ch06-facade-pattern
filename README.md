@@ -10,14 +10,49 @@ While Rust lacks object-oriented inheritance, the pattern maps perfectly to
 Rust's modules, visibility controls (pub), and structures (struct) to manage
 complexity and encapsulate dependencies.
 
+
+### Conceptual Diagram
+
+#### Can you create a UML diagram of the facade design pattern for Rust?
+
+```
+ ┌────────────────────────────────────────────────────────┐
+ │                        Client                          │
+ └───────────────────────────┬────────────────────────────┘
+                             │
+                             │ uses public API
+                             ▼
+ ┌────────────────────────────────────────────────────────┐
+ │            «struct» UnifiedSystemFacade                │
+ ├────────────────────────────────────────────────────────┤
+ │ - subsystem_a: SubsystemA                              │
+ │ - subsystem_b: SubsystemB                              │
+ ├────────────────────────────────────────────────────────┤
+ │ + new() -> Self                                        │
+ │ + execute_routine(&mut self) -> Result<(), SystemErr>  │
+ └───────────────────────────┬────────────────────────────┘
+                             │
+         ┌───────────────────┴───────────────────┐
+         │ owns (Composition)                    │ owns (Composition)
+         ▼                                       ▼
+ ┌────────────────────────┐             ┌────────────────────────┐
+ │  «struct» SubsystemA   │             │  «struct» SubsystemB   │
+ ├────────────────────────┤             ├────────────────────────┤
+ │                        │             │                        │
+ ├────────────────────────┤             ├────────────────────────┤
+ │ + init(&self)          │             │ + process(&self)       │
+ │ + run(&mut self)       │             │ + verify(&self)        │
+ └────────────────────────┘             └────────────────────────┘
+```
+
 ### Idiomatic Facade Variations in Rust
 
 Rust implements the core intent of the Facade pattern across multiple
 architectural levels:
 
-* *Module-Level Facades*: The most common Rust idiom is using pub use in a lib.rs or mod.rs file. This lets you organize internal code across dozens of nested, private modules while re-exporting them in a flat, clean public API hierarchy.
-* *C FFI Wrappers*: Exposing a safe, high-level Rust interface over an underlying, unsafe C library via a foreign function interface (FFI) acts as a traditional structural facade. [5] 
-* *Facade Crates*: In large architectures, a single facade crate can declare an abstract, shared interface (such as standard logging or allocation hooks) while hiding complex engine implementations underneath. [6] 
+* **Module-Level Facades**: The most common Rust idiom is using pub use in a lib.rs or mod.rs file. This lets you organize internal code across dozens of nested, private modules while re-exporting them in a flat, clean public API hierarchy.
+* **C FFI Wrappers**: Exposing a safe, high-level Rust interface over an underlying, unsafe C library via a foreign function interface (FFI) acts as a traditional structural facade.
+* **Facade Crates**: In large architectures, a single facade crate can declare an abstract, shared interface (such as standard logging or allocation hooks) while hiding complex engine implementations underneath.
 
 ### Architectural Trade-Offs
 
